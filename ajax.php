@@ -59,7 +59,7 @@
     }
 
     function get_lat_long($conn, $nombre) {
-        $result = $conn->query("SELECT Latitud, Longitud FROM equipos WHERE Nombre = '". $nombre ."'");
+        $result = $conn->query("SELECT Latitud, Longitud, Ruta_Imagen FROM equipos WHERE Nombre = '". $nombre ."'");
     
         $array = [];
         
