@@ -23,7 +23,6 @@ $nombres = get_equipos();
 
 $posiciones = get_posiciones();
 $lat_long = json_encode(get_lat_long_array());
-var_dump($lat_long);
 
 muestra_tabla();
 
@@ -39,13 +38,7 @@ function muestra_tabla() {
 
 <div class="center">
 	<div class="title">
-	<a href="mapaItalia.php?coord=<?php echo $lat_long ?>">
-	<?php 
-	echo('<img src="img/liga_logo.png" alt="shield" height="80" width="80" onclick="Lat_Long_Array(\''.$lat_long.'\')">')
-	?>
-	</a>
-	<!-- <img src="img/liga_logo.png" alt="shield" height="80" width="80"> -->
-		
+	<?php echo('<img src="img/liga_logo.png" alt="shield" height="80" width="80" onclick="Lat_Long_Array()">') ?>
         <h2>Equipos</h2>
 		<table class="table table-bordered">
 			<thead class="thead-dark">
@@ -170,7 +163,7 @@ function get_string_array($str){
 
 function get_lat_long_array() {
 	$conn = connection();
-	$result = $conn->query("SELECT Nombre, Latitud, Longitud, Ruta_Imagen FROM equipos");
+	$result = $conn->query("SELECT Latitud, Longitud FROM equipos");
 
 	$array = [];
 
@@ -191,9 +184,9 @@ function get_lat_long_array() {
 ?>
 
 <script>
-	function Lat_Long_Array(array){
+	function Lat_Long_Array(){
 		$.ajax({
-			data: {'action': 'Lat_Long_Array', 'array': array},
+			data: {'action': 'Lat_Long_Array'},
 			url:   'ajax.php',
 			type:  'post',
 			success:  function (res) {

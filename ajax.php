@@ -15,7 +15,7 @@
     } else if ($action =='Lat_Long'){
         echo json_encode(Lat_Long($conn, $_POST['local'], $_POST['visita']));
     } else if ($action == 'Lat_Long_Array') {
-        echo json_encode(get_lat_long_array($conn));
+        echo json_encode(Lat_Long_Array($conn));
     }
 
 ?>
@@ -71,11 +71,11 @@
     
         return $array;
     }
-
-
+?>
+<?php
     // ----------------------------------------------------------------------------------
-    function get_lat_long_array($conn) {
-        $result = $conn->query("SELECT Nombre, Latitud, Longitud, Ruta_Imagen FROM equipos");
+    function Lat_Long_Array($conn) {
+        $result = $conn->query("SELECT Latitud, Longitud, Ruta_Imagen, Nombre FROM equipos");
     
         $vec = [];
     
