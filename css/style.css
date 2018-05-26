@@ -41,6 +41,7 @@ div.inline { float:left; }
 .title {
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding-top: 1%;
 }
 
 .gray {

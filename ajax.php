@@ -1,19 +1,21 @@
 <?php 
     $servername = "localhost";
-    $username = "root";
-    $password = "";
+    $username = "slon";
+    $password = "1234";
     $dbname = "futbol";
             
 
     $conn = new mysqli($servername, $username, $password, $dbname);
     
     $action = $_POST['action'];
+    // var_dump($_POST['coord']);
 
-    if($action == 'Inc_Dec'){
+    if ($action == 'Inc_Dec'){
         echo json_encode(Inc_Dec($conn));
-    }
-    else if ($action =='Lat_Long'){
+    } else if ($action =='Lat_Long'){
         echo json_encode(Lat_Long($conn, $_POST['local'], $_POST['visita']));
+    } else if ($action == 'Lat_Long_Array') {
+        echo json_encode(get_lat_long_array($conn));
     }
 
 ?>
@@ -69,4 +71,19 @@
     
         return $array;
     }
+
+
+    // ----------------------------------------------------------------------------------
+    function get_lat_long_array($conn) {
+        $result = $conn->query("SELECT Nombre, Latitud, Longitud, Ruta_Imagen FROM equipos");
+    
+        $vec = [];
+    
+        while ($fila = $result->fetch_assoc()) {
+            array_push($vec, $fila);
+        }
+        
+        return $vec;
+    }
+
 ?>

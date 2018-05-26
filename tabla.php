@@ -22,17 +22,30 @@ $nombres = get_equipos();
 //  var_dump($nombres);
 
 $posiciones = get_posiciones();
+$lat_long = json_encode(get_lat_long_array());
+var_dump($lat_long);
 
 muestra_tabla();
 
 function muestra_tabla() {
 	global $posiciones;
 	global $nombres;
-	$i = 0;
+	global $lat_long;
+	$p = 0;
+
+	extract($_POST);
+	extract($_GET);
 ?>
 
 <div class="center">
 	<div class="title">
+	<a href="mapaItalia.php?coord=<?php echo $lat_long ?>">
+	<?php 
+	echo('<img src="img/liga_logo.png" alt="shield" height="80" width="80" onclick="Lat_Long_Array(\''.$lat_long.'\')">')
+	?>
+	</a>
+	<!-- <img src="img/liga_logo.png" alt="shield" height="80" width="80"> -->
+		
         <h2>Equipos</h2>
 		<table class="table table-bordered">
 			<thead class="thead-dark">
@@ -55,7 +68,9 @@ function muestra_tabla() {
 				
                 <?php foreach ($nombres as $row => $nombre): ?>
 					<tr>
-					<td style="width: 3%"><?= ++$i ?></td>
+					<td style="width: 3%">
+					<a href="Lineas03.php?league=Serie A TIM">
+					<?= ++$p ?></td>
 					<td style="width: 3%"><img src=<?= $posiciones[$row]['Ruta_Imagen']?> alt="shield" height="20" width="20"></td>
 					<td style="width: 20%"><a href="tablaEquipo.php?equipo=<?php echo ($posiciones[$row]['Equipo']); ?>"><?= $posiciones[$row]['Equipo']?></td>
 					<td style="width: 3%"><?= $posiciones[$row]['PJ'] ?></td>
@@ -97,8 +112,8 @@ function muestra_tabla() {
 
 function connection() {
 	$servername = "localhost";
-	$username = "root";
-	$password = "";
+	$username = "slon";
+	$password = "1234";
 	$dbname = "futbol";
 	
 	return new mysqli($servername, $username, $password, $dbname);
@@ -117,7 +132,18 @@ function get_equipos() {
     return $array;
 }
 
+function get_imagen($nom) {
+	$conn = connection();
+    $result = $conn->query("SELECT Ruta_Imagen FROM equipos WHERE Nombre = $nom");
 
+    $array = [];
+    
+    while ($fila = $result->fetch_assoc()) {
+          array_push($array, $fila);
+    }
+
+    return $array;
+}
 
 function get_posiciones() {
 	$conn = connection();
@@ -142,7 +168,41 @@ function get_string_array($str){
 	return $arr;
 }
 
+function get_lat_long_array() {
+	$conn = connection();
+	$result = $conn->query("SELECT Nombre, Latitud, Longitud, Ruta_Imagen FROM equipos");
+
+	$array = [];
+
+	while ($fila = $result->fetch_assoc()) {
+		array_push($array, $fila);
+	}
+	
+	return $array;
+}
+
+// function get_tabla_posiciones($equipo) {
+// 	$conn = connection();
+// 	conn->query("SELECT * FROM partidos join ")
+// 	$result = $conn->query("SELECT Jornada FROM partidos WHERE ELocal = $equipo OR EVisita = $equipo");
+
+// }
+
 ?>
+
+<script>
+	function Lat_Long_Array(array){
+		$.ajax({
+			data: {'action': 'Lat_Long_Array', 'array': array},
+			url:   'ajax.php',
+			type:  'post',
+			success:  function (res) {
+				localStorage.setItem("coordenadasAfterlife", res)
+				window.location.href = 'http://localhost/web/partidos/mapaItalia.php';
+			}
+	});
+	}
+</script>
 
 </body>
 </html>

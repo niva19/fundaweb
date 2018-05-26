@@ -82,8 +82,8 @@ function muestra_tabla() {
 
 function connection() {
 	$servername = "localhost";
-	$username = "root";
-	$password = "";
+	$username = "slon";
+	$password = "1234";
 	$dbname = "futbol";
 	
 	return new mysqli($servername, $username, $password, $dbname);
@@ -91,18 +91,6 @@ function connection() {
 
 function get_partidos($conn, $equipo) {
     $result = $conn->query("SELECT * FROM partidos WHERE (ELocal = '$equipo') OR (EVisita = '$equipo')");
-
-    $array = [];
-    
-    while ($fila = $result->fetch_assoc()) {
-          array_push($array, $fila);
-    }
-
-    return $array;
-}
-
-function get_lat_long($conn, $nombre) {
-    $result = $conn->query("SELECT Longitud FROM equipos WHERE Nombre = 'Juventus'");
 
     $array = [];
     
@@ -121,9 +109,9 @@ function get_lat_long($conn, $nombre) {
 			data: {'action': 'Lat_Long', 'local': local, 'visita': visita},
 			url:   'ajax.php',
 			type:  'post',
-			success:  function (res) {
+			success: function (res) {
 				localStorage.setItem("coordenadas", res)
-				window.location.href = 'http://localhost/script/mapa.php';
+				window.location.href = 'http://localhost/web/partidos/mapa.php';
 			}
 	});
 	}

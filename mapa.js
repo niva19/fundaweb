@@ -12,7 +12,7 @@ function mapLocation() {
 	function initialize() {
 		directionsDisplay = new google.maps.DirectionsRenderer({ suppressMarkers: true });
 
-		var coordenadas = JSON.parse(localStorage.getItem('coordenadas'))
+	    var coordenadas = JSON.parse(localStorage.getItem('coordenadas'));
 
 		var local = coordenadas[0][0]
 		local.Latitud = parseFloat(local.Latitud)
