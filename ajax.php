@@ -2,8 +2,7 @@
     $servername = "localhost";
     $username = "slon";
     $password = "1234";
-    $dbname = "futbol";
-            
+    $dbname = "futbol";           
 
     $conn = new mysqli($servername, $username, $password, $dbname);
     

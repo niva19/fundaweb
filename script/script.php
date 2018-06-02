@@ -15,7 +15,7 @@
         
         $conn = new mysqli($servername, $username, $password, $dbname);
         
-        $file = "posiciones.txt";
+        $file = "posiciones.txt";  //cambiar el nombre del archivo para la tabla de partidos
         $handle = fopen($file, "r");
         if ($handle) {
             while (($line = fgets($handle))) {

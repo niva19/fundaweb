@@ -22,14 +22,12 @@ $nombres = get_equipos();
 //  var_dump($nombres);
 
 $posiciones = get_posiciones();
-$lat_long = json_encode(get_lat_long_array());
 
 muestra_tabla();
 
 function muestra_tabla() {
 	global $posiciones;
 	global $nombres;
-	global $lat_long;
 	$p = 0;
 
 	extract($_POST);
@@ -62,8 +60,9 @@ function muestra_tabla() {
                 <?php foreach ($nombres as $row => $nombre): ?>
 					<tr>
 					<td style="width: 3%">
-					<a href="Lineas03.php?league=Serie A TIM">
-					<?= ++$p ?></td>
+					<a href="Lineas03.php?league=Serie A TIM &amp;img=<?php echo $posiciones[$row]['Ruta_Imagen'] ?>">
+					<?= ++$p ?></a>
+					</td>
 					<td style="width: 3%"><img src=<?= $posiciones[$row]['Ruta_Imagen']?> alt="shield" height="20" width="20"></td>
 					<td style="width: 20%"><a href="tablaEquipo.php?equipo=<?php echo ($posiciones[$row]['Equipo']); ?>"><?= $posiciones[$row]['Equipo']?></td>
 					<td style="width: 3%"><?= $posiciones[$row]['PJ'] ?></td>
@@ -114,21 +113,8 @@ function connection() {
 
 function get_equipos() {
 	$conn = connection();
-    $result = $conn->query("SELECT Nombre, Ruta_Imagen FROM equipos");
-
-    $array = [];
-    
-    while ($fila = $result->fetch_assoc()) {
-          array_push($array, $fila);
-    }
-
-    return $array;
-}
-
-function get_imagen($nom) {
-	$conn = connection();
-    $result = $conn->query("SELECT Ruta_Imagen FROM equipos WHERE Nombre = $nom");
-
+	$result = $conn->query("SELECT Nombre, Ruta_Imagen FROM equipos");
+	
     $array = [];
     
     while ($fila = $result->fetch_assoc()) {
@@ -160,26 +146,6 @@ function get_string_array($str){
 	}
 	return $arr;
 }
-
-function get_lat_long_array() {
-	$conn = connection();
-	$result = $conn->query("SELECT Latitud, Longitud FROM equipos");
-
-	$array = [];
-
-	while ($fila = $result->fetch_assoc()) {
-		array_push($array, $fila);
-	}
-	
-	return $array;
-}
-
-// function get_tabla_posiciones($equipo) {
-// 	$conn = connection();
-// 	conn->query("SELECT * FROM partidos join ")
-// 	$result = $conn->query("SELECT Jornada FROM partidos WHERE ELocal = $equipo OR EVisita = $equipo");
-
-// }
 
 ?>
 
