@@ -1,0 +1,5 @@
+UPDATE `equipos` SET `Ruta_Imagen`='img/Sassuolo_Calcio.png' WHERE `Id` = 'SCA'
+UPDATE `equipos` SET `Ruta_Imagen`='img/Inter.png' WHERE `Id` = 'INT'
+UPDATE `equipos` SET `Ruta_Imagen`='img/ACF_Fiorentina.png' WHERE `Id` = 'FIO'
+UPDATE `equipos` SET `Ruta_Imagen`='img/Bologna_FC.png' WHERE `Id` = 'BFC'
+UPDATE `equipos` SET `Ruta_Imagen`='img/SPAL_2013_Ferrara.png' WHERE `Id` = 'SPF'
