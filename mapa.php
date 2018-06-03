@@ -21,21 +21,29 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUumAlYDzLHWD8KaIQWY6siQn0sF1lBcs"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=geometry&sensor=false&key=AIzaSyBUumAlYDzLHWD8KaIQWY6siQn0sF1lBcs"></script>
     <script src="mapa.js" type="text/javascript"></script>
   </head>
   <body>
-      <div class="container-fluid">
+    <center>
+      <a href="" id="local"></a>
+      <a href="" id="fecha" style= "color: black;"></a>
+      <a href="" id="visita"></a>
+    </center>
+    <center>
+      <img id="img_local"  alt="" height="128" width="128">
+      <span id="puntaje" style="font-size: 30px;"></span>
+      <img id="img_visita" alt="" height="128" width="128">
+    </center>
+    <center>
+    <h5 id="distancia"></h5>
+    <h5 id="tiempo"></h5>
+    </center>
+      <!-- <div class="container-fluid">
         <div class="row">
-          
+        
         </div>
-        <div class="row">
-        <ul class="list-group">
-          <li class="list-group-item" id="distancia"></li>
-          <li class="list-group-item" id="tiempo"></li>
-        </ul>
-        </div>
-      </div>
+      </div> -->
       <br>
       <div id="map"></div>
   </body>

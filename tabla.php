@@ -18,6 +18,9 @@
 
 <?php
 
+// echo "Get:".extract($_GET)."\n";
+// print_r($_GET);
+
 $nombres = get_equipos();
 //  var_dump($nombres);
 
@@ -53,11 +56,16 @@ function muestra_tabla() {
 					<th>Dif</th>
 					<th>Puntos</th>	
 					<th><i id="decrement" class="fa fa-arrow-left" style="color: white;"></i> <span id="titulo">Ultimos 8 Juegos</span> <i class="fa fa-arrow-right" style="color: white;" id="increment"></i></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody id="table_body">
-				
+				<?php
+					if(extract($_GET) == 0){
+				?>
+				<?php $cont = 0?>
                 <?php foreach ($nombres as $row => $nombre): ?>
+				
 					<tr>
 					<td style="width: 3%">
 					<a href="Lineas03.php?league=Serie A TIM &amp;img=<?php echo $posiciones[$row]['Ruta_Imagen'] ?>">
@@ -91,10 +99,67 @@ function muestra_tabla() {
 							</tr>	
 						</table>
 					</td>
-                    </tr>	
+					<td><input class="chk" type="checkbox" value = <?= $cont ?> >&nbsp;</td>
+                    </tr>
+					<?php $cont++?>	
                 <?php endforeach; ?>
+				<?php } else{ ?>
+					<?php
+						$arr_get = $_GET;
+						$obj = json_decode($arr_get["valor"], true);
+						// print_r($obj);
+						// echo($obj[0]);
+						// echo($obj[1]);
+						$cont = 0;
+					?>
+					<?php foreach ($nombres as $row => $nombre): ?>
+						<?php if(is_selected($cont, $obj) == true){?>
+							<tr>
+							<td style="width: 3%">
+							<a href="Lineas03.php?league=Serie A TIM &amp;img=<?php echo $posiciones[$row]['Ruta_Imagen'] ?>">
+							<?= ++$p ?></a>
+							</td>
+							<td style="width: 3%"><img src=<?= $posiciones[$row]['Ruta_Imagen']?> alt="shield" height="20" width="20"></td>
+							<td style="width: 20%"><a href="tablaEquipo.php?equipo=<?php echo ($posiciones[$row]['Equipo']); ?>"><?= $posiciones[$row]['Equipo']?></td>
+							<td style="width: 3%"><?= $posiciones[$row]['PJ'] ?></td>
+							<td style="width: 3%"><?= $posiciones[$row]['PG'] ?></td>
+							<td style="width: 3%"><?= $posiciones[$row]['PE'] ?></td>
+							<td style="width: 3%"><?= $posiciones[$row]['PP'] ?></td>
+							<td style="width: 3%"><?= $posiciones[$row]['GF'] ?></td>
+							<td style="width: 3%"><?= $posiciones[$row]['GC'] ?></td>
+							<td style="width: 3%"><?= $posiciones[$row]['Dif'] ?></td>
+							<td style="width: 3%"><?= $posiciones[$row]['Puntos'] ?></td>
+							<td class="Ujuegos">
+								<table>
+									<tr>
+										<?php
+											$string_arr = get_string_array($posiciones[$row]['Ujuegos']);
+											for ($i=0; $i < 8; $i++) {
+												if($string_arr[$i] == "P") 
+													echo "<td style='background: red'>".$string_arr[$i]."</td>";
+												else if($string_arr[$i] == "G")
+													echo "<td style='background: green'>".$string_arr[$i]."</td>";
+												else {
+													echo "<td style='background: yellow'>".$string_arr[$i]."</td>";
+												}
+											}
+										?>			
+									</tr>	
+								</table>
+							</td>
+							<td><input class="chk" type="checkbox" value = <?= $cont ?> >&nbsp;</td>
+							</tr>
+							<?php $cont++?>
+						<?php } else{
+							$cont++;
+						}?>	
+					<?php endforeach; ?>
+
+				<?php } ?>
 			</tbody>
 		</table>
+		<center><button id="comparar">Comparar varios equipos</button></center>
+		<a href="distancias.php">Distancias en Km</a>
 	</div>
 </div>
 			
@@ -102,10 +167,28 @@ function muestra_tabla() {
 
 }
 
+function is_selected($num, $arr){
+	$flag = false;
+	$string_num = (string)$num;
+	for ($i = 0; $i < sizeof($arr); $i++) {
+		if($string_num == $arr[$i]){
+			$flag = true;
+			break;
+		} 
+	}
+	if($flag == true){
+		return true;
+	}
+	else{
+		return false;
+	}
+
+}
+
 function connection() {
 	$servername = "localhost";
-	$username = "slon";
-	$password = "1234";
+	$username = "root";
+	$password = "";
 	$dbname = "futbol";
 	
 	return new mysqli($servername, $username, $password, $dbname);
@@ -157,7 +240,7 @@ function get_string_array($str){
 			type:  'post',
 			success:  function (res) {
 				localStorage.setItem("coordenadasAfterlife", res)
-				window.location.href = 'http://localhost/web/partidos/mapaItalia.php';
+				window.location.href = 'mapaItalia.php';
 			}
 	});
 	}

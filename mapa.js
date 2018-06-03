@@ -1,9 +1,18 @@
 $(document).ready(function () {
+	var datos = JSON.parse(localStorage.getItem("datos"))
+	console.log(datos)
+	$("#local").text(datos.local_name)
+	$("#fecha").text(datos.fecha)
+	$("#visita").text(datos.visita_name)
+
+	$("#puntaje").text(datos.marcador)
+
+	$("#img_local").attr("src",`img/${datos.local_name.split(' ').join('_')}.png`);
+	$("#img_visita").attr("src",`img/${datos.visita_name.split(' ').join('_')}.png`);
 
 });
 
 function mapLocation() {
-
 
 	var directionsDisplay;
 	var directionsService = new google.maps.DirectionsService();
@@ -56,6 +65,10 @@ function mapLocation() {
 		var start = new google.maps.LatLng(local.Latitud, local.Longitud);
 		var end = new google.maps.LatLng(visita.Latitud, visita.Longitud);
 
+		
+
+	
+
 		var bounds = new google.maps.LatLngBounds();
 		bounds.extend(start);
 		bounds.extend(end);
@@ -69,7 +82,9 @@ function mapLocation() {
 			if (status == google.maps.DirectionsStatus.OK) {
 				directionsDisplay.setDirections(response);
 				var leg = response.routes[0].legs[0];
-				$("#distancia").text(`Distancia: ${leg.distance.text}`) 
+				var distance = google.maps.geometry.spherical.computeDistanceBetween(end, start);
+				$("#distancia").text(`Distancia: ${(distance/1000).toFixed(1)}`)
+				//$("#distancia").text(`Distancia: ${leg.distance.text}`) 
 				$("#tiempo").text(`Tiempo: ${leg.duration.text}`)
 				addMarker(leg.start_location, local.Ruta_Imagen, map);
 				addMarker(leg.end_location, visita.Ruta_Imagen, map);

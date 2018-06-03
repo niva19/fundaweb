@@ -65,7 +65,7 @@ function muestra_tabla() {
 						<td style="width: 3%"><?= $marcador = $partidos[$row]['GolesLocal'].":".$partidos[$row]['GolesVisita'] ?></td>
 						<td style="width: 3%">
 						<?php
-						echo('<img src="img/GoogleMaps.png" alt="maps" height="20" width="20"onclick="Lat_Long(\''.$partidos[$row]['ELocal'].'\', \''.$partidos[$row]['EVisita'].'\')">')
+						echo('<img src="img/GoogleMaps.png" alt="maps" height="20" width="20"onclick="Lat_Long(\''.$partidos[$row]['ELocal'].'\', \''.$partidos[$row]['EVisita'].'\' , \''.$partidos[$row]['Fecha'].'\', \''.$partidos[$row]['ELocal'].'\',\''.$partidos[$row]['EVisita'].'\',\''.$marcador.'\')">')
 						?>
 						</td>
 					</tr>
@@ -82,8 +82,8 @@ function muestra_tabla() {
 
 function connection() {
 	$servername = "localhost";
-	$username = "slon";
-	$password = "1234";
+	$username = "root";
+	$password = "";
 	$dbname = "futbol";
 	
 	return new mysqli($servername, $username, $password, $dbname);
@@ -104,14 +104,20 @@ function get_partidos($conn, $equipo) {
 ?>
 
 <script>
-	function Lat_Long(local, visita){
+	function Lat_Long(local, visita, fecha, local_name, visita_name, marcador){
 		$.ajax({
 			data: {'action': 'Lat_Long', 'local': local, 'visita': visita},
 			url:   'ajax.php',
 			type:  'post',
 			success: function (res) {
+				localStorage.setItem("datos", JSON.stringify({
+					fecha: fecha,
+					local_name: local_name,
+					visita_name: visita_name,
+					marcador: marcador
+				}))
 				localStorage.setItem("coordenadas", res)
-				window.location.href = 'http://localhost/web/partidos/mapa.php';
+				window.location.href = 'mapa.php';
 			}
 	});
 	}

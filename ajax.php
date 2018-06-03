@@ -1,7 +1,7 @@
 <?php 
     $servername = "localhost";
-    $username = "slon";
-    $password = "1234";
+    $username = "root";
+    $password = "";
     $dbname = "futbol";           
 
     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -15,7 +15,10 @@
         echo json_encode(Lat_Long($conn, $_POST['local'], $_POST['visita']));
     } else if ($action == 'Lat_Long_Array') {
         echo json_encode(Lat_Long_Array($conn));
+    } else if($action == 'distancias'){
+        echo json_encode(distancias($conn));
     }
+
 
 ?>
 
@@ -83,6 +86,30 @@
         }
         
         return $vec;
+    }
+
+    function distancias($conn){
+        $result = $conn->query("SELECT Nombre, Latitud, Longitud FROM equipos");
+    
+        $vec = [];
+    
+        while ($fila = $result->fetch_assoc()) {
+            array_push($vec, $fila);
+        }
+        
+        $result = $conn->query("SELECT Id FROM equipos");
+
+        $vec2 = [];
+
+        while ($fila2 = $result->fetch_assoc()) {
+            array_push($vec2, $fila2);
+        }
+
+        $vec3 = [];
+        array_push($vec3, $vec);
+        array_push($vec3, $vec2);
+
+        return $vec3;
     }
 
 ?>
